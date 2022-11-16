@@ -38,4 +38,26 @@ content-type: application/json
 
 ###
 
-GET https://localhost:7118/api/ordenes_envio/
+GET https://localhost:7118/api/ordenes_envio/0
+
+###
+
+POST https://localhost:7118/api/repartidores/
+content-type: application/json
+
+{
+  "IdDeliveryMan": null,
+  "FirstName": "Juan",
+  "LastName": "Perez"
+}
+
+###
+
+GET https://localhost:7118/api/repartidores/
+
+###
+
+POST https://localhost:7118/api/ordenes_envio/5/repartidor
+content-type: application/json
+
+10

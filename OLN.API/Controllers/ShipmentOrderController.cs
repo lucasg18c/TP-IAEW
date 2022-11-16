@@ -43,20 +43,25 @@ public class ShipmentOrderController : ControllerBase
   [HttpGet("{id:int}")]
   public IActionResult GetOrder(int id)
   {
-    foreach (var e in Repository.Current.Orders)
-    {
-      if (e.IdShipmentOrder == id)
-      {
-        return Ok(e);
-      }
-    }
-    return NotFound();
+    var found = Repository.Current.FindShipmentOrderById(id);
+
+    if (found is null) return NotFound($"No se encontró la orden con Id {id}");
+
+    return Ok(found);
   }
 
   [HttpPost("{id:int}/repartidor")]
   public IActionResult PostDeliveryMan(int id, [FromBody] int IdDeliveryMan)
   {
-    return Ok();
+    var orderFound = Repository.Current.FindShipmentOrderById(id);
+    if (orderFound is null) return NotFound($"No se encontró la orden con Id {id}");
+
+    var deliveryManFound = Repository.Current.FindDeliveryManById(IdDeliveryMan);
+    if (deliveryManFound is null) return NotFound($"No se encontró el repartidor con id {IdDeliveryMan}");
+
+    orderFound.DeliveryMan = deliveryManFound;
+
+    return Ok("Repartidor asignado");
   }
 
   [HttpPost("{id:int}/entrega")]

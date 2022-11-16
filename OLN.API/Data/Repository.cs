@@ -16,5 +16,30 @@ namespace OLN.API.Data
 
     public List<ShipmentOrder> Orders { get; } = new();
     public List<DeliveryMan> DeliveryMans { get; } = new();
+
+    public ShipmentOrder? FindShipmentOrderById(int id)
+    {
+      foreach (var e in Repository.Current.Orders)
+      {
+        if (e.IdShipmentOrder == id)
+        {
+          return e;
+        }
+      }
+      return null;
+    }
+
+
+    public DeliveryMan? FindDeliveryManById(int id)
+    {
+      foreach (var d in Repository.Current.DeliveryMans)
+      {
+        if (d.IdDeliveryMan == id)
+        {
+          return d;
+        }
+      }
+      return null;
+    }
   }
 }

@@ -32,15 +32,12 @@ namespace OLN.API.Controllers
     [HttpDelete]
     public IActionResult DeleteDeliveryManById([FromBody] int IdDeliveryMan)
     {
-      foreach (var d in Repository.Current.DeliveryMans)
-      {
-        if (d.IdDeliveryMan == IdDeliveryMan)
-        {
-          Repository.Current.DeliveryMans.Remove(d);
-          return Ok(d);
-        }
-      }
-      return NotFound($"No se encontró el repartidor con id {IdDeliveryMan}");
+      var found = Repository.Current.FindDeliveryManById(IdDeliveryMan);
+
+      if (found is null) return NotFound($"No se encontró el repartidor con id {IdDeliveryMan}");
+
+      Repository.Current.DeliveryMans.Remove(found);
+      return Ok(found);
     }
   }
 }
