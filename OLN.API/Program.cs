@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using OLN.API.Authorization;
+using RestSharp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<RestClient>((sp) =>
+{
+  var options = new RestClientOptions("https://api.myorg.com")
+  {
+    ThrowOnAnyError = true,
+    MaxTimeout = 1000
+  };
+  return new RestClient(options);
+});
 
 builder.Services.AddAuthentication(options =>
 {

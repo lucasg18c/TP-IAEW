@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OLN.API.Data;
 using OLN.API.DTO;
 using OLN.API.Models;
+using RestSharp;
 
 namespace OLN.API.Controllers;
 
@@ -11,10 +12,12 @@ namespace OLN.API.Controllers;
 public class ShipmentOrderController : ControllerBase
 {
   private readonly ILogger<ShipmentOrderController> _logger;
+  private readonly RestClient _client;
 
-  public ShipmentOrderController(ILogger<ShipmentOrderController> logger)
+  public ShipmentOrderController(ILogger<ShipmentOrderController> logger, RestClient client)
   {
     _logger = logger;
+    _client = client;
   }
 
   [HttpPost]
@@ -77,6 +80,12 @@ public class ShipmentOrderController : ControllerBase
 
     orderFound.State = ShipmentState.Delivered;
     orderFound.Delivered = DateTime.Now;
+
+    var req = new RestRequest($"/envios/{id}/novedades").AddBody(new
+    {
+      State = 2
+    });
+    _client.PostAsync(req);
 
     return Ok("Entrega registrada.");
   }

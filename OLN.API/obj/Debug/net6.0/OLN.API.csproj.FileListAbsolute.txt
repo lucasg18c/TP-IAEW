@@ -32,3 +32,4 @@
 /home/lucas/Desktop/TP-IAEW/OLN.API/bin/Debug/net6.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/lucas/Desktop/TP-IAEW/OLN.API/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
 /home/lucas/Desktop/TP-IAEW/OLN.API/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll
+/home/lucas/Desktop/TP-IAEW/OLN.API/bin/Debug/net6.0/RestSharp.dll

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "TYd2y6AeYuj2ObN8vMymYUl9JafaKr4rCTbV51n/kCP4l8jlVE0EMDAoyQ4dyDjLYnfCkMeSUb38hA6fc8BILA==",
+  "dgSpecHash": "rqA+ym+AVzQDn1NexQsfAmkKNXRTJ2HhcVCn/nlb6EVSJw51U2txH5Lnoo7doF2qm3kvL3UtOOVSi4Vo1cQwhw==",
   "success": true,
   "projectFilePath": "/home/lucas/Desktop/TP-IAEW/OLN.API/OLN.API.csproj",
   "expectedPackageFiles": [
@@ -13,6 +13,7 @@
     "/home/lucas/.nuget/packages/microsoft.identitymodel.protocols.openidconnect/6.10.0/microsoft.identitymodel.protocols.openidconnect.6.10.0.nupkg.sha512",
     "/home/lucas/.nuget/packages/microsoft.identitymodel.tokens/6.10.0/microsoft.identitymodel.tokens.6.10.0.nupkg.sha512",
     "/home/lucas/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/home/lucas/.nuget/packages/restsharp/108.0.2/restsharp.108.0.2.nupkg.sha512",
     "/home/lucas/.nuget/packages/swashbuckle.aspnetcore/6.2.3/swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
     "/home/lucas/.nuget/packages/swashbuckle.aspnetcore.swagger/6.2.3/swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
     "/home/lucas/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.2.3/swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
