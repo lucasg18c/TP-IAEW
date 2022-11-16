@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OLN.API.Data;
 using OLN.API.DTO;
@@ -17,6 +18,7 @@ public class ShipmentOrderController : ControllerBase
   }
 
   [HttpPost]
+  [Authorize("write:shipmentorder")]
   public IActionResult CreateShipmentOrder([FromBody] CreateOrderDTO order)
   {
     ShipmentOrder created = new()
@@ -34,14 +36,8 @@ public class ShipmentOrderController : ControllerBase
     return Ok(created);
   }
 
-  // NO ES NECESARIO
-  [HttpGet]
-  public IActionResult GetOrders()
-  {
-    return Ok(Repository.Current.Orders);
-  }
-
   [HttpGet("{id:int}")]
+  [Authorize("read:shipmentorder")]
   public IActionResult GetOrder(int id)
   {
     var found = Repository.Current.FindShipmentOrderById(id);
@@ -52,6 +48,7 @@ public class ShipmentOrderController : ControllerBase
   }
 
   [HttpPost("{id:int}/repartidor")]
+  [Authorize("write:shipmentstate")]
   public IActionResult PostDeliveryMan(int id, [FromBody] int IdDeliveryMan)
   {
     var orderFound = Repository.Current.FindShipmentOrderById(id);
@@ -67,6 +64,7 @@ public class ShipmentOrderController : ControllerBase
   }
 
   [HttpPost("{id:int}/entrega")]
+  [Authorize("write:shipmentstate")]
   public IActionResult OrderDelivered(int id)
   {
     var orderFound = Repository.Current.FindShipmentOrderById(id);

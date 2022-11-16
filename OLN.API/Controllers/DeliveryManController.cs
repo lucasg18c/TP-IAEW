@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OLN.API.Data;
 using OLN.API.Models;
@@ -16,12 +17,14 @@ namespace OLN.API.Controllers
     }
 
     [HttpGet]
+    [Authorize("read:deliverymans")]
     public IActionResult GetDeliveryMans()
     {
       return Ok(Repository.Current.DeliveryMans);
     }
 
     [HttpPost]
+    [Authorize("write:deliverymans")]
     public IActionResult PostDeliveryManBy([FromBody] DeliveryMan deliveryMan)
     {
       deliveryMan.IdDeliveryMan = Repository.Current.DeliveryMans.Count;
@@ -30,6 +33,7 @@ namespace OLN.API.Controllers
     }
 
     [HttpDelete]
+    [Authorize("delete:deliverymans")]
     public IActionResult DeleteDeliveryManById([FromBody] int IdDeliveryMan)
     {
       var found = Repository.Current.FindDeliveryManById(IdDeliveryMan);
