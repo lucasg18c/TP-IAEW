@@ -1,4 +1,4 @@
-namespace OLN.API.DTO
+namespace OLN.API.Models
 {
   public class Address
   {

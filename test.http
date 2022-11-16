@@ -2,15 +2,40 @@ POST https://localhost:7118/api/ordenes_envio
 content-type: application/json
 
 {
-  "IdShipmentOrder": 2,
-  "OriginAddress": "Cacheuta 4028",
-  "DestinationAddress": "Villanueva 2764",
-  "BuyerContact": "3515951448",
-  "ShipmentState": "Created",
-  "Product": "Xbox",
-  "DeliveryMan": "Pepe"
+  "Origin": {
+    "IdAddress": null,
+    "Street": "Cacheuta",
+    "HouseNumber": 4028,
+    "Floor": 1,
+    "ApartmentNumber": 1,
+    "City": {
+      "IdCity": null,
+      "Name": "Córdoba"
+    }
+  },
+  "Destination": {
+    "IdAddress": null,
+    "Street": "Villanueva",
+    "HouseNumber": 2764,
+    "Floor": null,
+    "ApartmentNumber": null,
+    "City": {
+      "IdCity": null,
+      "Name": "Córdoba"
+    }
+  },
+  "Buyer": {
+    "IdContact": null,
+    "Email": "lucasg18c@gmail.com",
+    "Phone": "3515951448"
+  },
+  "Product": {
+    "IdProduct": null,
+    "Name": "Xbox series S",
+    "Description": "Consola de videojuegos"
+  }
 }
 
 ###
 
-GET https://localhost:7118/api/ordenes_envio/2
+GET https://localhost:7118/api/ordenes_envio/

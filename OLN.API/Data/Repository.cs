@@ -1,4 +1,4 @@
-using OLN.API.DTO;
+using OLN.API.Models;
 
 namespace OLN.API.Data
 {
@@ -14,7 +14,7 @@ namespace OLN.API.Data
       }
     }
 
-    public List<ShipmentOrderDTO> Orders { get; set; } = new();
+    public List<ShipmentOrder> Orders { get; set; } = new();
 
   }
 }

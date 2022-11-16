@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OLN.API.Data;
 using OLN.API.DTO;
+using OLN.API.Models;
 
 namespace OLN.API.Controllers;
 
@@ -16,10 +17,20 @@ public class ShipmentOrderController : ControllerBase
   }
 
   [HttpPost]
-  public IActionResult CreateShipmentOrder([FromBody] ShipmentOrderDTO order)
+  public IActionResult CreateShipmentOrder([FromBody] CreateOrderDTO order)
   {
-    Repository.Current.Orders.Add(order);
-    return Ok();
+    ShipmentOrder created = new()
+    {
+      IdShipmentOrder = Repository.Current.Orders.Count,
+      Origin = order.Origin,
+      Destination = order.Destination,
+      Buyer = order.Buyer,
+      DeliveryMan = null,
+      Product = order.Product,
+      State = ShipmentState.Created
+    };
+    Repository.Current.Orders.Add(created);
+    return Ok(created);
   }
 
   [HttpGet]
