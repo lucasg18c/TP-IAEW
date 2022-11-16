@@ -33,6 +33,7 @@ public class ShipmentOrderController : ControllerBase
     return Ok(created);
   }
 
+  // NO ES NECESARIO
   [HttpGet]
   public IActionResult GetOrders()
   {
@@ -53,7 +54,13 @@ public class ShipmentOrderController : ControllerBase
   }
 
   [HttpPost("{id:int}/repartidor")]
-  public IActionResult PostDeliveryMan(int id, [FromBody] DeliveryMan deliveryMan)
+  public IActionResult PostDeliveryMan(int id, [FromBody] int IdDeliveryMan)
+  {
+    return Ok();
+  }
+
+  [HttpPost("{id:int}/entrega")]
+  public IActionResult OrderDelivered(int id, [FromBody] int IdShipmentOrder)
   {
     return Ok();
   }

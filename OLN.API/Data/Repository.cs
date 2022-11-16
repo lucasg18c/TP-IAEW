@@ -14,7 +14,7 @@ namespace OLN.API.Data
       }
     }
 
-    public List<ShipmentOrder> Orders { get; set; } = new();
-
+    public List<ShipmentOrder> Orders { get; } = new();
+    public List<DeliveryMan> DeliveryMans { get; } = new();
   }
 }
