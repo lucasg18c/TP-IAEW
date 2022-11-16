@@ -38,7 +38,7 @@ content-type: application/json
 
 ###
 
-GET https://localhost:7118/api/ordenes_envio/0
+GET https://localhost:7118/api/ordenes_envio/2
 
 ###
 
@@ -55,9 +55,19 @@ content-type: application/json
 
 GET https://localhost:7118/api/repartidores/
 
-###
+######
 
-POST https://localhost:7118/api/ordenes_envio/5/repartidor
+DELETE https://localhost:7118/api/repartidores/
 content-type: application/json
 
-10
+1
+###
+
+POST https://localhost:7118/api/ordenes_envio/2/repartidor
+content-type: application/json
+
+1
+
+###
+
+POST https://localhost:7118/api/ordenes_envio/2/entrega

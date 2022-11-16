@@ -36,6 +36,14 @@ namespace OLN.API.Controllers
 
       if (found is null) return NotFound($"No se encontró el repartidor con id {IdDeliveryMan}");
 
+      foreach (var e in Repository.Current.Orders)
+      {
+        if (e.State == ShipmentState.Transit && e.DeliveryMan != null && e.DeliveryMan.IdDeliveryMan == IdDeliveryMan)
+        {
+          return BadRequest("No se puede eliminar al repartidor ya que tiene ordenes en tránsito");
+        }
+      }
+
       Repository.Current.DeliveryMans.Remove(found);
       return Ok(found);
     }

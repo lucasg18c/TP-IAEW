@@ -27,7 +27,8 @@ public class ShipmentOrderController : ControllerBase
       Buyer = order.Buyer,
       DeliveryMan = null,
       Product = order.Product,
-      State = ShipmentState.Created
+      State = ShipmentState.Created,
+      Create = DateTime.Now
     };
     Repository.Current.Orders.Add(created);
     return Ok(created);
@@ -60,13 +61,25 @@ public class ShipmentOrderController : ControllerBase
     if (deliveryManFound is null) return NotFound($"No se encontró el repartidor con id {IdDeliveryMan}");
 
     orderFound.DeliveryMan = deliveryManFound;
+    orderFound.State = ShipmentState.Transit;
 
     return Ok("Repartidor asignado");
   }
 
   [HttpPost("{id:int}/entrega")]
-  public IActionResult OrderDelivered(int id, [FromBody] int IdShipmentOrder)
+  public IActionResult OrderDelivered(int id)
   {
-    return Ok();
+    var orderFound = Repository.Current.FindShipmentOrderById(id);
+    if (orderFound is null) return NotFound($"No se encontró la orden con Id {id}.");
+
+    if (orderFound.State != ShipmentState.Transit)
+    {
+      return BadRequest("La orden debe estar en Tránsito para poder ser entregada.");
+    }
+
+    orderFound.State = ShipmentState.Delivered;
+    orderFound.Delivered = DateTime.Now;
+
+    return Ok("Entrega registrada.");
   }
 }

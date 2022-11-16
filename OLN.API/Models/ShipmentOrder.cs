@@ -9,5 +9,7 @@ namespace OLN.API.Models
     public ShipmentState State { get; set; }
     public Product Product { get; set; }
     public DeliveryMan? DeliveryMan { get; set; }
+    public DateTime Create { get; set; }
+    public DateTime? Delivered { get; set; }
   }
 }
