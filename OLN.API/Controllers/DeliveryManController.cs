@@ -25,26 +25,26 @@ namespace OLN.API.Controllers
 
     [HttpPost]
     [Authorize("write:deliverymans")]
-    public IActionResult PostDeliveryManBy([FromBody] DeliveryMan deliveryMan)
+    public IActionResult PostDeliveryManBy([FromBody] Repartidor deliveryMan)
     {
-      deliveryMan.IdDeliveryMan = Repository.Current.DeliveryMans.Count;
+      deliveryMan.IdRepartidor = Repository.Current.SiguienteId;
       Repository.Current.DeliveryMans.Add(deliveryMan);
       return Ok(deliveryMan);
     }
 
     [HttpDelete]
     [Authorize("delete:deliverymans")]
-    public IActionResult DeleteDeliveryManById([FromBody] int IdDeliveryMan)
+    public IActionResult DeleteDeliveryManById([FromBody] int IdRepartidor)
     {
-      var found = Repository.Current.FindDeliveryManById(IdDeliveryMan);
+      var found = Repository.Current.FindDeliveryManById(IdRepartidor);
 
-      if (found is null) return NotFound($"No se encontró el repartidor con id {IdDeliveryMan}");
+      if (found is null) return NotFound($"No se encontró el repartidor con id {IdRepartidor}");
 
       foreach (var e in Repository.Current.Orders)
       {
-        if (e.State == ShipmentState.Transit && e.DeliveryMan != null && e.DeliveryMan.IdDeliveryMan == IdDeliveryMan)
+        if (e.Repartidor != null && e.Repartidor.IdRepartidor == IdRepartidor)
         {
-          return BadRequest("No se puede eliminar al repartidor ya que tiene ordenes en tránsito");
+          return BadRequest("No se puede eliminar al repartidor ya que tiene ordenes vinculadas.");
         }
       }
 

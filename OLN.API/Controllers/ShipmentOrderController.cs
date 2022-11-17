@@ -22,21 +22,26 @@ public class ShipmentOrderController : ControllerBase
 
   [HttpPost]
   [Authorize("write:shipmentorder")]
-  public IActionResult CreateShipmentOrder([FromBody] CreateOrderDTO order)
+  public IActionResult CreateShipmentOrder([FromBody] CrearOrdenDTO order)
   {
-    ShipmentOrder created = new()
+
+    OrdenEnvio creada = new()
     {
-      IdShipmentOrder = Repository.Current.Orders.Count,
-      Origin = order.Origin,
-      Destination = order.Destination,
-      Buyer = order.Buyer,
-      DeliveryMan = null,
-      Product = order.Product,
-      State = ShipmentState.Created,
-      Create = DateTime.Now
+      IdOrdenEnvio = Repository.Current.SiguienteId,
+      ContactoComprador = order.contactoComprador,
+      DetalleProducto = order.detalleProducto,
+      DireccionDestino = order.direccionDestino,
+      DireccionOrigen = order.direccionOrigen,
+      Estados = new() {
+        new CambioEstadoOrden {
+          Estado = EstadoOrden.creado,
+          FechaAlta = DateTime.Now
+        }
+      }
     };
-    Repository.Current.Orders.Add(created);
-    return Ok(created);
+
+    Repository.Current.Orders.Add(creada);
+    return Ok(creada);
   }
 
   [HttpGet("{id:int}")]
@@ -52,16 +57,19 @@ public class ShipmentOrderController : ControllerBase
 
   [HttpPost("{id:int}/repartidor")]
   [Authorize("write:shipmentstate")]
-  public IActionResult PostDeliveryMan(int id, [FromBody] int IdDeliveryMan)
+  public IActionResult PostDeliveryMan(int id, [FromBody] int IdRepartidor)
   {
     var orderFound = Repository.Current.FindShipmentOrderById(id);
     if (orderFound is null) return NotFound($"No se encontró la orden con Id {id}");
 
-    var deliveryManFound = Repository.Current.FindDeliveryManById(IdDeliveryMan);
-    if (deliveryManFound is null) return NotFound($"No se encontró el repartidor con id {IdDeliveryMan}");
+    var deliveryManFound = Repository.Current.FindDeliveryManById(IdRepartidor);
+    if (deliveryManFound is null) return NotFound($"No se encontró el repartidor con id {IdRepartidor}");
 
-    orderFound.DeliveryMan = deliveryManFound;
-    orderFound.State = ShipmentState.Transit;
+    if (orderFound.EstadoActual().Estado != EstadoOrden.creado) return BadRequest("La orden debe estar en estado \"Creado \" para pasar a en Tránsito");
+
+    orderFound.Repartidor = deliveryManFound;
+    orderFound.EstadoActual().FechaBaja = DateTime.Now;
+    orderFound.Estados.Add(new CambioEstadoOrden { Estado = EstadoOrden.enTransito, FechaAlta = DateTime.Now });
 
     return Ok("Repartidor asignado");
   }
@@ -73,13 +81,13 @@ public class ShipmentOrderController : ControllerBase
     var orderFound = Repository.Current.FindShipmentOrderById(id);
     if (orderFound is null) return NotFound($"No se encontró la orden con Id {id}.");
 
-    if (orderFound.State != ShipmentState.Transit)
+    if (orderFound.EstadoActual().Estado != EstadoOrden.enTransito)
     {
       return BadRequest("La orden debe estar en Tránsito para poder ser entregada.");
     }
 
-    orderFound.State = ShipmentState.Delivered;
-    orderFound.Delivered = DateTime.Now;
+    orderFound.EstadoActual().FechaBaja = DateTime.Now;
+    orderFound.Estados.Add(new CambioEstadoOrden { Estado = EstadoOrden.entregado, FechaAlta = DateTime.Now });
 
     var req = new RestRequest($"/envios/{id}/novedades").AddBody(new
     {

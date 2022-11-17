@@ -14,14 +14,20 @@ namespace OLN.API.Data
       }
     }
 
-    public List<ShipmentOrder> Orders { get; } = new();
-    public List<DeliveryMan> DeliveryMans { get; } = new();
+    private int siguienteId = 1;
+    public int SiguienteId
+    {
+      get => siguienteId++;
+    }
 
-    public ShipmentOrder? FindShipmentOrderById(int id)
+    public List<OrdenEnvio> Orders { get; } = new();
+    public List<Repartidor> DeliveryMans { get; } = new();
+
+    public OrdenEnvio? FindShipmentOrderById(int id)
     {
       foreach (var e in Repository.Current.Orders)
       {
-        if (e.IdShipmentOrder == id)
+        if (e.IdOrdenEnvio == id)
         {
           return e;
         }
@@ -30,11 +36,11 @@ namespace OLN.API.Data
     }
 
 
-    public DeliveryMan? FindDeliveryManById(int id)
+    public Repartidor? FindDeliveryManById(int id)
     {
       foreach (var d in Repository.Current.DeliveryMans)
       {
-        if (d.IdDeliveryMan == id)
+        if (d.IdRepartidor == id)
         {
           return d;
         }
