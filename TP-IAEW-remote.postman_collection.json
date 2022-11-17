@@ -1,0 +1,322 @@
+{
+	"info": {
+		"_postman_id": "008858b2-6ab6-4686-b393-53228a86bd0d",
+		"name": "TP-IAEW-remote",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19877567"
+	},
+	"item": [
+		{
+			"name": "ClientCredentials",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"client_id\":\"HqjwNGT8uBncYE8g4CBqbELDdUwFaAJB\",\n  \"client_secret\":\"gKTA4he9k3ARZTj2BEOY0DzK6p0DOCgBYfrMTMdUqSHxUligepaxIfX0hVKfiFAR\",\n  \"audience\":\"https://oln.com.ar/api/\",\n  \"grant_type\":\"client_credentials\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://dev-qdpsr1z8.us.auth0.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"dev-qdpsr1z8",
+						"us",
+						"auth0",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta Orden de Envío",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{iaew_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"idEnvio\": 1,\n    \"direccionOrigen\": [\n        \"Calle 123\",\n        \"Córdoba\"\n    ],\n    \"direccionDestino\": [\n        \"Calle 456\",\n        \"Córdoba\",\n        \"Córdoba\"\n    ],\n    \"contactoComprador\": \"lucasg18c@gmail.com\",\n    \"detalleProducto\": \"Xbox Series S\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://15.228.36.145:8081/api/ordenes_envio",
+					"protocol": "http",
+					"host": [
+						"15",
+						"228",
+						"36",
+						"145"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"ordenes_envio"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Orden Envío",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{iaew_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://15.228.36.145:8081/api/ordenes_envio/4",
+					"protocol": "http",
+					"host": [
+						"15",
+						"228",
+						"36",
+						"145"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"ordenes_envio",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alta Repartidor",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{iaew_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Nombre\": \"Lucas\",\n    \"Apellido\": \"Slavik\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://15.228.36.145:8081/api/repartidores",
+					"protocol": "http",
+					"host": [
+						"15",
+						"228",
+						"36",
+						"145"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"repartidores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar Repartidores",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{iaew_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://15.228.36.145:8081/api/repartidores",
+					"protocol": "http",
+					"host": [
+						"15",
+						"228",
+						"36",
+						"145"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"repartidores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Baja Repartidor",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{iaew_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "2",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://15.228.36.145:8081/api/repartidores",
+					"protocol": "http",
+					"host": [
+						"15",
+						"228",
+						"36",
+						"145"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"repartidores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asignar Repartidor a Orden",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{iaew_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "2",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://15.228.36.145:8081/api/ordenes_envio/4/repartidor",
+					"protocol": "http",
+					"host": [
+						"15",
+						"228",
+						"36",
+						"145"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"ordenes_envio",
+						"4",
+						"repartidor"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registrar Entrega de Orden",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{iaew_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://15.228.36.145:8081/api/ordenes_envio/4/entrega",
+					"protocol": "http",
+					"host": [
+						"15",
+						"228",
+						"36",
+						"145"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"ordenes_envio",
+						"4",
+						"entrega"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "iaew_token",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlZVd3NwVUFHcHJ2b1pLVkVfSXJCUyJ9.eyJpc3MiOiJodHRwczovL2Rldi1xZHBzcjF6OC51cy5hdXRoMC5jb20vIiwic3ViIjoiSHFqd05HVDh1Qm5jWUU4ZzRDQnFiRUxEZFV3RmFBSkJAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vb2xuLmNvbS5hci9hcGkvIiwiaWF0IjoxNjY4NzE5Nzc5LCJleHAiOjE2Njg4MDYxNzksImF6cCI6IkhxandOR1Q4dUJuY1lFOGc0Q0JxYkVMRGRVd0ZhQUpCIiwic2NvcGUiOiJyZWFkOmRlbGl2ZXJ5bWFucyB3cml0ZTpkZWxpdmVyeW1hbnMgZGVsZXRlOmRlbGl2ZXJ5bWFucyB3cml0ZTpzaGlwbWVudG9yZGVyIHJlYWQ6c2hpcG1lbnRvcmRlciB3cml0ZTpzaGlwbWVudHN0YXRlIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.rqJou-HSO_hTNte5VImh_Y2HbXRIk-UCgWrEnGh2Tj4zfbMvRwK_p4m0WFCpSdEbznUwpMLB9x2Svgcu91DuhuUB8Mv_-Dr1uu0bvao2XwLmbKDL0TF0HMFeyuF-hO-57fwOQ84Kk1deDsjwttyJ688cxldCAfGRSS-78FOVt01WqfK-ITChgrNpxHeUWzbYiiKIBCTbuzanYtCSUKf3egxMcGDi6cAWN_7scjE-Q6yPVKRfY_C8MzeWr3VXXG1yxf6abbWr1T84JbV_VZZmC0dGqCSVUcgcfcYUoeLP6QFdqmohsLb4k-C1KMODBs7klKIL3JqA88_c2It8jbN8zw"
+		}
+	]
+}
