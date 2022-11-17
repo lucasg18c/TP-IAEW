@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace OLN.API.DTO
 {
   public class CrearOrdenDTO
   {
-    public int idEnvio { get; set; }
+    [Required]
+    public int? idEnvio { get; set; } = null;
     public List<string> direccionOrigen { get; set; }
     public List<string> direccionDestino { get; set; }
     public string contactoComprador { get; set; }

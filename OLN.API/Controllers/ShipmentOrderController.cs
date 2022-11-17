@@ -26,11 +26,10 @@ public class ShipmentOrderController : ControllerBase
   [Authorize("write:shipmentorder")]
   public IActionResult CreateShipmentOrder([FromBody] CrearOrdenDTO order)
   {
-
     OrdenEnvio creada = new()
     {
       IdOrdenEnvio = Repository.Current.SiguienteId,
-      IdEnvio = order.idEnvio,
+      IdEnvio = (int)order.idEnvio!,
       ContactoComprador = order.contactoComprador,
       DetalleProducto = order.detalleProducto,
       DireccionDestino = order.direccionDestino,
@@ -116,7 +115,7 @@ public class ShipmentOrderController : ControllerBase
           var procesadorClient = new RestClient("http://ecs-services-1705455222.us-east-1.elb.amazonaws.com");
           procesadorClient.Authenticator = new JwtAuthenticator(res.access_token);
           var reqNovedades = new RestRequest($"/api/Envios/{orderFound.IdEnvio}/Novedades")
-          .AddJsonBody(orderFound.EstadoActual().Estado.ToString());
+          .AddJsonBody(new { estadoEnvio = "enTransito" });//orderFound.EstadoActual().Estado.ToString());
           var novedadesRes = await procesadorClient.PostAsync(reqNovedades);
           if (novedadesRes.IsSuccessful) entregaNotificada = true;
         }
