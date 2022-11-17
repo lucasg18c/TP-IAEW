@@ -2,6 +2,7 @@ namespace OLN.API.DTO
 {
   public class CrearOrdenDTO
   {
+    public int idEnvio { get; set; }
     public List<string> direccionOrigen { get; set; }
     public List<string> direccionDestino { get; set; }
     public string contactoComprador { get; set; }

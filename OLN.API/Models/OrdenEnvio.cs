@@ -3,6 +3,7 @@ namespace OLN.API.Models
   public class OrdenEnvio
   {
     public int IdOrdenEnvio { get; set; }
+    public int IdEnvio { get; set; }
     public List<string> DireccionOrigen { get; set; } = new();
     public List<string> DireccionDestino { get; set; } = new();
     public string ContactoComprador { get; set; }

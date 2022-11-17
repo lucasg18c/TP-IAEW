@@ -1,9 +1,11 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OLN.API.Data;
 using OLN.API.DTO;
 using OLN.API.Models;
 using RestSharp;
+using RestSharp.Authenticators;
 
 namespace OLN.API.Controllers;
 
@@ -28,6 +30,7 @@ public class ShipmentOrderController : ControllerBase
     OrdenEnvio creada = new()
     {
       IdOrdenEnvio = Repository.Current.SiguienteId,
+      IdEnvio = order.idEnvio,
       ContactoComprador = order.contactoComprador,
       DetalleProducto = order.detalleProducto,
       DireccionDestino = order.direccionDestino,
@@ -65,7 +68,7 @@ public class ShipmentOrderController : ControllerBase
     var deliveryManFound = Repository.Current.FindDeliveryManById(IdRepartidor);
     if (deliveryManFound is null) return NotFound($"No se encontró el repartidor con id {IdRepartidor}");
 
-    if (orderFound.EstadoActual().Estado != EstadoOrden.creado) return BadRequest("La orden debe estar en estado \"Creado \" para pasar a en Tránsito");
+    if (orderFound.EstadoActual().Estado != EstadoOrden.creado) return BadRequest("La orden debe estar en estado \"Creado\" para pasar a en Tránsito");
 
     orderFound.Repartidor = deliveryManFound;
     orderFound.EstadoActual().FechaBaja = DateTime.Now;
@@ -76,7 +79,7 @@ public class ShipmentOrderController : ControllerBase
 
   [HttpPost("{id:int}/entrega")]
   [Authorize("write:shipmentstate")]
-  public IActionResult OrderDelivered(int id)
+  public async Task<IActionResult> OrderDelivered(int id)
   {
     var orderFound = Repository.Current.FindShipmentOrderById(id);
     if (orderFound is null) return NotFound($"No se encontró la orden con Id {id}.");
@@ -89,12 +92,38 @@ public class ShipmentOrderController : ControllerBase
     orderFound.EstadoActual().FechaBaja = DateTime.Now;
     orderFound.Estados.Add(new CambioEstadoOrden { Estado = EstadoOrden.entregado, FechaAlta = DateTime.Now });
 
-    var req = new RestRequest($"/envios/{id}/novedades").AddBody(new
+    var reqToken = new RestRequest("/oauth/token")
+    .AddJsonBody(new
     {
-      State = 2
-    });
-    _client.PostAsync(req);
+      client_id = "C0L2So2k7ZBdKwhMCWwRZCZQYHqThX7a",
+      client_secret = "6pVQtQwSKefZ_4N6hTbo17NHfazaLcyp3gF1GqGLefl64eC_zn8RDrYuHvaYlWrH",
+      audience = "https://api.procesadorenvios.com",
+      grant_type = "client_credentials"
+    }
+  );
 
-    return Ok("Entrega registrada.");
+    bool entregaNotificada = false;
+    try
+    {
+      var client = new RestClient("https://dev-pmt16h97.us.auth0.com");
+      var tokenRes = await client.PostAsync(reqToken);
+
+      if (tokenRes.IsSuccessful && tokenRes.Content != null)
+      {
+        var res = JsonSerializer.Deserialize<GetTokenDTO>(tokenRes.Content);
+        if (res?.access_token != null)
+        {
+          var procesadorClient = new RestClient("http://ecs-services-1705455222.us-east-1.elb.amazonaws.com");
+          procesadorClient.Authenticator = new JwtAuthenticator(res.access_token);
+          var reqNovedades = new RestRequest($"/api/Envios/{orderFound.IdEnvio}/Novedades")
+          .AddJsonBody(orderFound.EstadoActual().Estado.ToString());
+          var novedadesRes = await procesadorClient.PostAsync(reqNovedades);
+          if (novedadesRes.IsSuccessful) entregaNotificada = true;
+        }
+      }
+    }
+    catch (Exception) { }
+
+    return Ok($"Entrega registrada{(entregaNotificada ? " y notificada" : "")}.");
   }
 }
